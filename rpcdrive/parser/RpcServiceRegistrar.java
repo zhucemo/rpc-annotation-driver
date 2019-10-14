@@ -24,7 +24,6 @@ import java.util.Set;
  * @author Sugar
  * Created by 2019/10/12
  **/
-@Configuration
 public class RpcServiceRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
