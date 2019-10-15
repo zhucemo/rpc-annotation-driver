@@ -25,5 +25,5 @@ public @interface EnableRpcClient {
 
     Class<?>[] basePackageClasses() default {};
 
-    String url() default "";
+    String[] urls() default "";
 }
