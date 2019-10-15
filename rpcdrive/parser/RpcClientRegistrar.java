@@ -30,7 +30,12 @@ public class RpcClientRegistrar implements ImportBeanDefinitionRegistrar, Resour
             scanner.setResourceLoader(resourceLoader);
         }
 
-        String url = annoAttrs.getString("url");
+        String urlCombination = System.getenv("WAYKICHAIN_RPCURL");
+        String[] urls;
+        if (urlCombination == null)
+            urls = annoAttrs.getStringArray("urls");
+        else
+            urls = urlCombination.split(",");
 
         List<String> basePackages = new ArrayList<String>();
         for (String pkg : annoAttrs.getStringArray("basePackages")) {
@@ -42,7 +47,7 @@ public class RpcClientRegistrar implements ImportBeanDefinitionRegistrar, Resour
             basePackages.add(ClassUtils.getPackageName(clazz));
         }
         scanner.registerFilters();
-        scanner.doScan(url, StringUtils.toStringArray(basePackages));
+        scanner.doScan(urls, StringUtils.toStringArray(basePackages));
     }
 
     @Override

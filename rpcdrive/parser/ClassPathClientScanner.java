@@ -40,15 +40,19 @@ public class ClassPathClientScanner extends ClassPathBeanDefinitionScanner {
         return beanDefinition.getMetadata().isInterface() && beanDefinition.getMetadata().isIndependent();
     }
 
-    void doScan(String url, String... basePackages) {
-        Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages);
+    void doScan(String[] urls, String... basePackages) {
+        for (int i = 0; i < basePackages.length; i++) {
+            Set<BeanDefinitionHolder> beanDefinitions = super.doScan(basePackages[i]);
 
-        if (beanDefinitions.isEmpty()) {
-            logger.warn("不存在可执行RPC服务");
-        } else {
-            processBeanDefinitions(url, beanDefinitions);
+            if (beanDefinitions.isEmpty()) {
+                logger.warn("不存在可执行RPC服务");
+            } else {
+                if (urls.length > i)
+                    processBeanDefinitions(urls[i], beanDefinitions);
+                else
+                    processBeanDefinitions(urls[urls.length - 1], beanDefinitions);
+            }
         }
-
     }
 
     private void processBeanDefinitions(String url, Set<BeanDefinitionHolder> beanDefinitions) {
